@@ -74,7 +74,7 @@
     background-image: -o-linear-gradient(top,#08c,#0077b3);
     background-image: linear-gradient(to bottom,#08c,#0077b3);
     background-repeat: repeat-x;
-    filter: progid:DXImageTransform.Microsoft;
+    /*filter: progid:DXImageTransform.Microsoft;*/
 }
 
 .rte-autocomplete >.active > a, .rte-autocomplete > .active > a:hover, .rte-autocomplete > .active > a:focus {
@@ -88,5 +88,5 @@
     background-image: linear-gradient(to bottom,#08c,#0077b3);
     background-repeat: repeat-x;
     outline: 0;
-    filter: progid:DXImageTransform.Microsoft;
+    /*filter: progid:DXImageTransform.Microsoft;*/
 }

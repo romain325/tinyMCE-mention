@@ -1,7 +1,7 @@
 var tinymce = require('tinymce/tinymce');
 
 require('tinymce/themes/modern/theme');
-require('tinymce-mention');
+require('../../mention/plugin');
 
 tinymce.init({
   selector: '#rte',
@@ -9,7 +9,7 @@ tinymce.init({
   plugins: ['mention'],
   mentions: {
     source: [
-      { name: 'Tyra Porcelli' }, 
+      { name: 'Tyra Porcelli', id:1 }, 
       { name: 'Brigid Reddish' },
       { name: 'Ashely Buckler' },
       { name: 'Teddy Whelan' }

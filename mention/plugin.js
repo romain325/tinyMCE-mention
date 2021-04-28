@@ -149,7 +149,6 @@
             case 27:
                 e.preventDefault();
                 break;
-
             //UP ARROW
             case 38:
                 e.preventDefault();
@@ -181,6 +180,10 @@
             if (this.hasFocus) {
                 this.cleanUp(true);
             }
+        },
+
+        controlBackspace: () => {
+            
         },
 
         lookup: function () {
@@ -309,15 +312,29 @@
             this.$dropdown.find('li').removeClass('active').eq(index).addClass('active');
         },
 
+        onMentionModify: function(e) {
+            e.preventDefault();
+            console.log("I've been triggered")
+            const txtArr = e.currentTarget.innerText.split(" ");
+            txtArr.pop()
+            if(txtArr.length > 0){
+                $(e.currentTarget).text(txtArr.join(' '));  
+            }else{
+                e.currentTarget.remove();
+            }
+        },
+
         select: function (item) {
             this.editor.focus();
             var selection = this.editor.dom.select('span#autocomplete')[0];
             this.editor.dom.remove(selection);
             this.editor.execCommand('mceInsertContent', false, this.insert(item));
+            console.log($(this.editor.selection.getNode()).find(`[id='${item[this.options.insertFrom]}']`))
+            $(this.editor.selection.getNode()).find(`[id='${item[this.options.insertFrom]}']`).on("DOMSubtreeModified", (e) => { this.onMentionModify(e) });
         },
 
         insert: function (item) {
-            return '<span>' + item[this.options.insertFrom] + '</span>&nbsp;';
+            return '<span class="at_mention" id="'+ item[this.options.insertFrom] +'" style="background-color: #C7C9E0;font-weight: bold;">' + item[this.options.insertFrom] + '</span>&nbsp;';
         },
 
         cleanUp: function (rollback) {
@@ -390,8 +407,29 @@
                 return (!!$.trim(charachter).length) ? false : true;
             }
 
+
+
+            /*
+            ed.on('keydown', (e) => {
+                // Is Backspace
+                if((e.which || e.keyCode) !== 8) return;
+                ed.execCommand('mceInsertContent', false,'<span class="marker">\ufeff</span>');
+                var rng = ed.selection.getRng(1);
+                var rng2 = rng.cloneRange();
+
+                // set start of range to begin of forst paragraph
+                rng2.setStartBefore($(ed.getBody()).find('p:first').get(0));
+
+                rng2.setEndBefore($(ed.getBody()).find('span.marker').get(0));
+                ed.selection.setRng(rng2);
+                var content = ed.selection.getContent({format: 'text'});
+                $(ed.getBody()).find('span.marker').remove();
+
+            });
+            */
+
             ed.on('keypress', function (e) {
-                var delimiterIndex = $.inArray(String.fromCharCode(e.which || e.keyCode), autoCompleteData.delimiter);
+                const delimiterIndex = $.inArray(String.fromCharCode(e.which || e.keyCode), autoCompleteData.delimiter);
                 if (delimiterIndex > -1 && prevCharIsSpace()) {
                     if (autoComplete === undefined || (autoComplete.hasFocus !== undefined && !autoComplete.hasFocus)) {
                         e.preventDefault();
