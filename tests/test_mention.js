@@ -38,7 +38,7 @@
         }
     }
 
-    QUnit.config.autostart = false;
+    //QUnit.config.autostart = false;
 
     QUnit.module('Mention', {
         setup: function () {
@@ -52,7 +52,7 @@
     });
 
     QUnit.test('basic test', function (assert) {
-        assert.expect(2);
+        assert.expect(1);
 
         pressDelimiter();
 
@@ -60,10 +60,10 @@
 
         var done = assert.async();
 
-        setTimeout(function () {
+        setTimeout(function() {
             assert.equal($('.rte-autocomplete li').length, 10, 'First 10 entries loaded.');
             done();
-        }, 600);
+        }, 1000);
     });
 
     QUnit.test('keyboard navigation', function (assert) {
@@ -145,7 +145,7 @@
                 pressArrowDown();
                 pressEnter();
 
-                assert.equal(editor.getContent(), '<p>Jenniffer Caffey&nbsp;will&nbsp;look&nbsp;into&nbsp;this.&nbsp;Can&nbsp;you&nbsp;also&nbsp;have&nbsp;a&nbsp;look&nbsp;Elizabet Gebhart&nbsp;</p>', 'Second entry submitted.');
+                assert.equal(editor.getContent(), '<p>Jenniffer Caffey will look into this. Can you also have a look Elizabet Gebhart&nbsp;</p>', 'Second entry submitted.');
 
                 done2();
             }, 600);

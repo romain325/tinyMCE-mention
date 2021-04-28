@@ -18,7 +18,7 @@
     "node": ">=0.10.26"
   },
   "dependencies": {
-    "tinymce": "^4.3.13",
+    "tinymce": "^4.9.11",
     "tinymce-mention": "^4.0.1"
   },
   "devDependencies": {

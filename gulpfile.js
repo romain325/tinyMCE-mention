@@ -14,9 +14,10 @@ gulp.task('bower', gulp.series(() => {
     return bower();
 }));
 
-gulp.task('test', gulp.series('bower', function () {
+gulp.task('test', gulp.series('bower', () => {
+    // run export OPENSSL_CONF=/etc/ssl before 
     return gulp.src('./tests/test_runner.html')
-        .pipe(qunit({ timeout: 10 }));
+        .pipe(qunit({'phantomjs-options': ['--ssl-protocol=any'], 'binPath': require('phantomjs2').path}));
 }));
 
 gulp.task('default', gulp.series('lint'));

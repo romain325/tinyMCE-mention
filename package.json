@@ -22,10 +22,12 @@
         "gulp-bower": "^0.0.12",
         "gulp-jshint": "~2.0.0",
         "gulp-qunit": "~1.3.1",
-        "jshint": "~2.9.1"
+        "jshint": "~2.9.1",
+        "phantomjs2": "^2.2.0"
     },
     "main": "mention/plugin.js",
     "scripts": {
-        "test": "gulp lint test"
+        "lint": "gulp lint",
+        "test": "gulp test"
     }
 }
