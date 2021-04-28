@@ -33,6 +33,8 @@
     var AutoComplete = function (ed, options) {
         this.editor = ed;
 
+        console.log(options)
+
         this.options = $.extend({}, {
             source: [],
             delay: 500,
@@ -313,15 +315,7 @@
         },
 
         onMentionModify: function(e) {
-            e.preventDefault();
-            console.log("I've been triggered")
-            const txtArr = e.currentTarget.innerText.split(" ");
-            txtArr.pop()
-            if(txtArr.length > 0){
-                $(e.currentTarget).text(txtArr.join(' '));  
-            }else{
-                e.currentTarget.remove();
-            }
+            e.currentTarget.remove();
         },
 
         select: function (item) {
@@ -329,12 +323,11 @@
             var selection = this.editor.dom.select('span#autocomplete')[0];
             this.editor.dom.remove(selection);
             this.editor.execCommand('mceInsertContent', false, this.insert(item));
-            console.log($(this.editor.selection.getNode()).find(`[id='${item[this.options.insertFrom]}']`))
-            $(this.editor.selection.getNode()).find(`[id='${item[this.options.insertFrom]}']`).on("DOMSubtreeModified", (e) => { this.onMentionModify(e) });
+            $(this.editor.selection.getNode()).find(`[id='${item['id'] == null ? item[this.options.insertFrom] : item['id']}']`).on("DOMSubtreeModified", (e) => { this.onMentionModify(e) });
         },
 
         insert: function (item) {
-            return '<span class="at_mention" id="'+ item[this.options.insertFrom] +'" style="background-color: #C7C9E0;font-weight: bold;">' + item[this.options.insertFrom] + '</span>&nbsp;';
+            return `<span class="at_mention" id="${item['id'] == null ? item[this.options.insertFrom] : item['id']}" style="${this.options.mentionStyle}">${item[this.options.insertFrom]}</span>&nbsp;`;
         },
 
         cleanUp: function (rollback) {
@@ -398,7 +391,9 @@
             // If the delimiter is undefined set default value to ['@'].
             // If the delimiter is a string value convert it to an array. (backwards compatibility)
             autoCompleteData.delimiter = (autoCompleteData.delimiter !== undefined) ? !$.isArray(autoCompleteData.delimiter) ? [autoCompleteData.delimiter] : autoCompleteData.delimiter : ['@'];
-
+            
+            autoCompleteData.mentionStyle = (autoCompleteData.mentionStyle === undefined) ? "background-color: #C7C9E0;font-weight: bold;" : autoCompleteData.mentionStyle;
+                
             function prevCharIsSpace() {
                 var start = ed.selection.getRng(true).startOffset,
                       text = ed.selection.getRng(true).startContainer.data || '',
@@ -406,27 +401,6 @@
 
                 return (!!$.trim(charachter).length) ? false : true;
             }
-
-
-
-            /*
-            ed.on('keydown', (e) => {
-                // Is Backspace
-                if((e.which || e.keyCode) !== 8) return;
-                ed.execCommand('mceInsertContent', false,'<span class="marker">\ufeff</span>');
-                var rng = ed.selection.getRng(1);
-                var rng2 = rng.cloneRange();
-
-                // set start of range to begin of forst paragraph
-                rng2.setStartBefore($(ed.getBody()).find('p:first').get(0));
-
-                rng2.setEndBefore($(ed.getBody()).find('span.marker').get(0));
-                ed.selection.setRng(rng2);
-                var content = ed.selection.getContent({format: 'text'});
-                $(ed.getBody()).find('span.marker').remove();
-
-            });
-            */
 
             ed.on('keypress', function (e) {
                 const delimiterIndex = $.inArray(String.fromCharCode(e.which || e.keyCode), autoCompleteData.delimiter);
@@ -444,7 +418,7 @@
         getInfo: function () {
             return {
                 longname: 'mention',
-                author: 'Steven Devooght',
+                author: 'Steven Devooght, Romain Olivier',
                 version: tinymce.majorVersion + '.' + tinymce.minorVersion
             };
         }
