@@ -8,7 +8,6 @@ tinymce.init({
   skin: false,
   plugins: ['mention'],
   mentions: {
-    delimiter: "@",
     source: [
       { name: 'Tyra Porcelli', id:1 }, 
       { name: 'Brigid Reddish', id:2 },

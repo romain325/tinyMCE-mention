@@ -155,13 +155,30 @@ Key used in the default `insert` implementation.
 
 Callback to set the content you want to insert in tinyMCE.
 
+
 ```javascript
 insert: function(item) {
-    return '<span>' + item.name + '</span>';
+    return '<span class="at_content" id="' + item.id + '">' + item.name + '</span>';
 }
 ```
 
+> NOTE: you need to set the class at_content in order to have the "teams-like" options, if no id given in the source, queryBy used by default
 > NOTE: item parameter has all properties defined in the `source` option.
+
+### useMentionBlock
+
+Treat a mention as a block, you can't delete or add letters in the block
+
+```js
+useMentionBlock: true
+```
+### style
+
+Change style of the default insert
+
+```js
+mentionStyle: 'font-size: 72px; background-color: red;';
+```
 
 ### render
 
